@@ -1,6 +1,6 @@
 // app/page.tsx
 import { Rocket, Calendar, MapPin, Share2, Ticket } from 'lucide-react';
-
+import './globals.css';
 export default function Home() {
   return (
     <div className="bg-lza-black text-white min-h-screen font-sans">
