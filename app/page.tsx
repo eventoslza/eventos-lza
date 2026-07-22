@@ -18,10 +18,9 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION - BANNER PRINCIPAL */}
       <section className="relative h-screen flex items-center justify-center pt-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10"></div>
-        
         <div className="relative z-20 text-center px-4 max-w-5xl">
           <div className="flex justify-center mb-6">
              <span className="bg-yellow-500/10 border border-yellow-500 text-yellow-500 px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase animate-bounce">
@@ -36,7 +35,7 @@ export default function Home() {
             A maior vitrine de entretenimento de Luziânia e Região
           </p>
           
-          {/* CONTADOR */}
+          {/* CONTADOR DO PRÓXIMO GRANDE EVENTO */}
           <div className="mt-12 inline-block bg-white/5 backdrop-blur-lg border-2 border-yellow-500 p-6 md:p-8 rounded-[30px] shadow-2xl">
             <p className="text-yellow-500 font-bold mb-4 uppercase text-xs tracking-tighter">Próximo Grande Evento: EXPOAGRO</p>
             <div className="flex gap-4 md:gap-10 text-2xl md:text-6xl font-mono font-black">
@@ -50,7 +49,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NÚMEROS DA EMPRESA */}
+      {/* NÚMEROS DA EMPRESA (ANIMADOS) */}
       <section className="py-16 bg-zinc-900/50">
         <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
@@ -68,45 +67,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EVENTOS EM DESTAQUE */}
+      {/* SEÇÃO DE EVENTOS EM DESTAQUE */}
       <section id="eventos" className="py-20 container mx-auto px-6">
         <h2 className="text-3xl font-black italic uppercase mb-12 border-l-4 border-yellow-500 pl-4">Eventos em <span className="text-yellow-500">Destaque</span></h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[1].map((item) => (
-            <div key={item} className="group bg-zinc-900 rounded-[30px] overflow-hidden border border-white/10 hover:border-yellow-500 transition-all duration-500">
-              <div className="relative h-64 overflow-hidden">
-                <img src="/banner-rodeio.jpg" alt="Evento" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <div className="absolute top-4 left-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-[10px] font-black uppercase">Rodeio</div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-black uppercase italic text-white group-hover:text-yellow-500 transition">RODEIO SHOW 2024</h3>
-                <p className="text-gray-400 text-sm mt-2">Parque de Exposições, Luziânia</p>
-                
-                <div className="mt-6 flex flex-col gap-2">
-                  <button className="w-full bg-yellow-500 text-black font-black py-3 rounded-xl hover:bg-yellow-400 transition flex items-center justify-center gap-2 uppercase text-xs">
-                    <Ticket size={16} /> Comprar Ingresso
-                  </button>
-                </div>
+          <div className="group bg-zinc-900 rounded-[30px] overflow-hidden border border-white/10 hover:border-yellow-500 transition-all duration-500">
+            <div className="relative h-64 overflow-hidden">
+              <img src="/banner-rodeio.jpg" alt="Evento" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <div className="absolute top-4 left-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-[10px] font-black uppercase">Rodeio</div>
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-black uppercase italic text-white group-hover:text-yellow-500 transition">RODEIO SHOW 2024</h3>
+              <p className="text-gray-400 text-sm mt-2 font-medium">Parque de Exposições, Luziânia</p>
+              <div className="mt-6">
+                <button className="w-full bg-yellow-500 text-black font-black py-3 rounded-xl hover:bg-yellow-400 transition flex items-center justify-center gap-2 uppercase text-xs">
+                  <Ticket size={16} /> Comprar Ingresso
+                </button>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-black py-12 border-t border-white/10 text-center">
+      {/* FOOTER - RODAPÉ */}
+      <footer className="bg-black py-12 border-t border-white/10 text-center px-6">
         <img src="/logo-lza.png" alt="LZA" className="h-10 mx-auto mb-6 opacity-50" />
-        <div className="flex justify-center gap-6 mb-6">
-          <Instagram size={20} className="text-yellow-500"/>
-          <MessageCircle size={20} className="text-yellow-500"/>
+        <p className="text-gray-400 text-sm mb-4">eventosluziania.regiao02@gmail.com</p>
+        <div className="flex justify-center gap-6 mb-8">
+          <a href="https://instagram.com/eventoslza.oficial" className="text-yellow-500 hover:text-white transition"><Instagram size={24}/></a>
+          <a href="https://wa.me/5562994319156" className="text-yellow-500 hover:text-white transition"><MessageCircle size={24}/></a>
         </div>
-        <p className="text-[10px] text-gray-600 uppercase tracking-widest">© 2024 EVENTOS LZA • LUZIÂNIA E REGIÃO</p>
+        <p className="text-[10px] text-gray-600 uppercase tracking-widest">© 2024 EVENTOS LZA • CONECTANDO A REGIÃO</p>
       </footer>
 
-      {/* WHATSAPP FLUTUANTE */}
-      <a href="https://wa.me/5562994319156" className="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-2xl z-50">
-        <MessageCircle size={24} color="white" />
+      {/* BOTÃO FLUTUANTE WHATSAPP */}
+      <a href="https://wa.me/5562994319156" className="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-2xl z-50 hover:scale-110 transition-transform">
+        <MessageCircle size={28} color="white" />
       </a>
     </div>
   );
