@@ -1,66 +1,43 @@
-import { Plus, List, Users, LayoutDashboard, LogOut } from 'lucide-react';
+import { criarEvento, deletarEvento } from '../actions'
+import { PrismaClient } from '@prisma/client'
 
-export default function AdminDashboard() {
+const prisma = new PrismaClient()
+
+export default async function AdminPage() {
+  const eventos = await prisma.evento.findMany({ orderBy: { data: 'asc' } })
+
   return (
-    <div className="min-h-screen bg-brand-black flex text-white font-sans">
-      {/* Sidebar Mobile adaptado */}
-      <div className="hidden md:flex w-64 bg-black border-r border-brand-gold/10 p-8 flex-col gap-10">
-        <img src="/logo-lza.png" className="w-32" />
-        <nav className="space-y-6">
-          <a href="#" className="flex items-center gap-3 text-brand-gold font-bold"><LayoutDashboard/> Dashboard</a>
-          <a href="#" className="flex items-center gap-3 text-gray-500 hover:text-white transition"><Plus/> Novo Evento</a>
-          <a href="#" className="flex items-center gap-3 text-gray-500 hover:text-white transition"><Users/> Parceiros</a>
-        </nav>
+    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '100vh', padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ color: '#FDB813', fontStyle: 'italic', textTransform: 'uppercase' }}>Painel Eventos LZA</h1>
+      
+      {/* FORMULÁRIO DE CADASTRO */}
+      <section style={{ background: '#111', padding: '20px', borderRadius: '15px', marginBottom: '30px', border: '1px solid #333' }}>
+        <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Cadastrar Novo Evento</h2>
+        <form action={criarEvento} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <input name="nome" placeholder="Nome do Evento" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#000', color: '#fff' }} required />
+          <input name="data" type="date" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#000', color: '#fff' }} required />
+          <input name="cidade" placeholder="Cidade" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#000', color: '#fff' }} required />
+          <input name="imagemUrl" placeholder="Link da Imagem (URL)" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#000', color: '#fff' }} required />
+          <input name="link" placeholder="Link do Ingresso (Opcional)" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#000', color: '#fff' }} />
+          <button type="submit" style={{ background: '#FDB813', color: '#000', fontWeight: 'bold', padding: '15px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>PUBLICAR EVENTO</button>
+        </form>
+      </section>
+
+      {/* LISTA PARA REMOVER */}
+      <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Gerenciar Eventos Ativos</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {eventos.map((ev) => (
+          <div key={ev.id} style={{ background: '#111', padding: '15px', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <p style={{ fontWeight: 'bold', margin: 0 }}>{ev.nome}</p>
+              <small style={{ color: '#888' }}>{ev.cidade}</small>
+            </div>
+            <form action={async () => { "use server"; await deletarEvento(ev.id); }}>
+              <button style={{ background: '#E31E24', color: '#fff', border: 'none', padding: '8px 12px', borderRadius: '5px', fontWeight: 'bold' }}>EXCLUIR</button>
+            </form>
+          </div>
+        ))}
       </div>
-
-      {/* Conteúdo Principal */}
-      <main className="flex-1 p-6 md:p-12">
-        <header className="flex justify-between items-center mb-12">
-          <h1 className="text-3xl font-black italic uppercase">Painel <span className="text-brand-gold">Controle</span></h1>
-          <button className="bg-brand-gold text-black px-6 py-2 rounded-xl font-bold flex items-center gap-2">
-            <Plus size={20}/> NOVO EVENTO
-          </button>
-        </header>
-
-        {/* Resumo */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-brand-dark p-6 rounded-3xl border border-white/5">
-            <p className="text-gray-500 text-xs font-bold uppercase">Eventos Ativos</p>
-            <p className="text-4xl font-black text-brand-gold">12</p>
-          </div>
-          <div className="bg-brand-dark p-6 rounded-3xl border border-white/5">
-            <p className="text-gray-500 text-xs font-bold uppercase">Solicitações</p>
-            <p className="text-4xl font-black text-brand-gold">05</p>
-          </div>
-        </div>
-
-        {/* Tabela de Eventos */}
-        <div className="bg-brand-dark rounded-3xl border border-white/5 overflow-hidden">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-black text-brand-gold font-bold uppercase text-[10px]">
-              <tr>
-                <th className="p-5">Evento</th>
-                <th className="p-5 text-center">Data</th>
-                <th className="p-5 text-center">Status</th>
-                <th className="p-5 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {[1, 2, 3].map((i) => (
-                <tr key={i} className="hover:bg-white/5 transition">
-                  <td className="p-5 font-bold italic uppercase">Expoagro Luziânia 2024</td>
-                  <td className="p-5 text-center text-gray-400 font-mono">15/08/2024</td>
-                  <td className="p-5 text-center"><span className="bg-green-500/20 text-green-500 px-3 py-1 rounded-full text-[10px] font-bold">ATIVO</span></td>
-                  <td className="p-5 text-right flex justify-end gap-3 font-bold text-xs uppercase">
-                    <button className="text-brand-gold">Editar</button>
-                    <button className="text-red-500">Excluir</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </main>
     </div>
-  );
+  )
 }
