@@ -1,23 +1,39 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Evento {
-  id        String   @id @default(cuid())
-  nome      String
-  data      DateTime
-  cidade    String
-  imagemUrl String
-  link      String?
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {
   id       String @id @default(cuid())
   username String @unique
   password String
+}
+
+model Evento {
+  id           String   @id @default(cuid())
+  nome         String
+  descricao    String   @db.Text
+  data         DateTime
+  horario      String
+  cidade       String
+  local        String
+  categoria    String
+  imagemUrl    String
+  ingressoLink String?
+  destaque     Boolean  @default(false)
+  apoiado      Boolean  @default(false)
+  ativo        Boolean  @default(true)
+  criadoEm     DateTime @default(now())
+}
+
+model Parceiro {
+  id        String  @id @default(cuid())
+  nome      String
+  logoUrl   String
+  instagram String?
+  site      String?
 }
