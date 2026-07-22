@@ -1,50 +1,49 @@
-import { Rocket, Users, MapPin, Calendar, Ticket, Instagram, WhatsappIcon, Menu, Star, ShieldCheck } from 'lucide-react';
+import { Rocket, Users, MapPin, Calendar, Ticket, Instagram, MessageCircle, Menu, Star, ShieldCheck } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="bg-brand-black min-h-screen text-white selection:bg-brand-gold selection:text-black">
+    <div className="bg-black min-h-screen text-white font-sans">
       
       {/* NAVBAR */}
-      <nav className="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-brand-gold/20 px-6 py-4 flex justify-between items-center">
+      <nav className="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-yellow-600/20 px-6 py-4 flex justify-between items-center">
         <img src="/logo-lza.png" alt="LZA" className="h-10 md:h-14" />
         <div className="hidden md:flex gap-8 font-bold uppercase text-xs tracking-widest">
-          <a href="#eventos" className="hover:text-brand-gold transition">Eventos</a>
-          <a href="/sobre" className="hover:text-brand-gold transition">Sobre Nós</a>
-          <a href="/galeria" className="hover:text-brand-gold transition">Galeria</a>
-          <a href="/contato" className="hover:text-brand-gold transition">Contato</a>
+          <a href="#eventos" className="hover:text-yellow-500 transition">Eventos</a>
+          <a href="#" className="hover:text-yellow-500 transition">Sobre Nós</a>
+          <a href="#" className="hover:text-yellow-500 transition">Galeria</a>
+          <a href="#" className="hover:text-yellow-500 transition">Contato</a>
         </div>
-        <button className="bg-brand-gold text-black px-6 py-2 rounded-full font-black text-xs uppercase hover:scale-105 transition shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+        <button className="bg-yellow-500 text-black px-6 py-2 rounded-full font-black text-xs uppercase hover:scale-105 transition shadow-lg">
           Anuncie
         </button>
       </nav>
 
       {/* HERO SECTION */}
       <section className="relative h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-30 scale-110 animate-pulse"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-brand-black"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10"></div>
         
-        <div className="relative z-10 text-center px-4 max-w-5xl">
+        <div className="relative z-20 text-center px-4 max-w-5xl">
           <div className="flex justify-center mb-6">
-             <span className="bg-brand-gold/10 border border-brand-gold text-brand-gold px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase animate-bounce">
+             <span className="bg-yellow-500/10 border border-yellow-500 text-yellow-500 px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase animate-bounce">
                O Foguete da Região 🚀
              </span>
           </div>
-          <h1 className="text-5xl md:text-8xl font-black italic uppercase leading-none drop-shadow-2xl">
+          <h1 className="text-4xl md:text-8xl font-black italic uppercase leading-none">
             CONECTANDO VOCÊ AOS <br/>
-            <span className="text-brand-gold">MAIORES EVENTOS</span>
+            <span className="text-yellow-500">MAIORES EVENTOS</span>
           </h1>
           <p className="text-gray-400 mt-6 text-sm md:text-xl uppercase tracking-[0.3em] font-light">
             A maior vitrine de entretenimento de Luziânia e Região
           </p>
           
-          {/* GRANDE CONTADOR */}
-          <div className="mt-12 inline-block bg-white/5 backdrop-blur-lg border-2 border-brand-gold p-8 rounded-[40px] shadow-[0_0_50px_rgba(212,175,55,0.15)]">
-            <p className="text-brand-gold font-bold mb-4 uppercase tracking-tighter">Próximo Grande Evento: EXPOAGRO</p>
-            <div className="flex gap-6 md:gap-12 text-3xl md:text-6xl font-mono font-black">
+          {/* CONTADOR */}
+          <div className="mt-12 inline-block bg-white/5 backdrop-blur-lg border-2 border-yellow-500 p-6 md:p-8 rounded-[30px] shadow-2xl">
+            <p className="text-yellow-500 font-bold mb-4 uppercase text-xs tracking-tighter">Próximo Grande Evento: EXPOAGRO</p>
+            <div className="flex gap-4 md:gap-10 text-2xl md:text-6xl font-mono font-black">
               <div>15 <span className="block text-[10px] text-gray-500 uppercase">Dias</span></div>
-              <div className="text-brand-gold">:</div>
+              <div className="text-yellow-500">:</div>
               <div>08 <span className="block text-[10px] text-gray-500 uppercase">Horas</span></div>
-              <div className="text-brand-gold">:</div>
+              <div className="text-yellow-500">:</div>
               <div>42 <span className="block text-[10px] text-gray-500 uppercase">Min</span></div>
             </div>
           </div>
@@ -52,18 +51,18 @@ export default function Home() {
       </section>
 
       {/* NÚMEROS DA EMPRESA */}
-      <section className="py-20 bg-brand-dark">
-        <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-16 bg-zinc-900/50">
+        <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { label: 'Eventos Divulgados', val: '500+', icon: <Calendar className="text-brand-gold"/> },
-            { label: 'Cidades Atendidas', val: '15+', icon: <MapPin className="text-brand-gold"/> },
-            { label: 'Parceiros Oficiais', val: '120+', icon: <Star className="text-brand-gold"/> },
-            { label: 'Credibilidade', val: '100%', icon: <ShieldCheck className="text-brand-gold"/> },
+            { label: 'Eventos Divulgados', val: '500+', icon: <Calendar className="text-yellow-500"/> },
+            { label: 'Cidades Atendidas', val: '15+', icon: <MapPin className="text-yellow-500"/> },
+            { label: 'Parceiros Oficiais', val: '120+', icon: <Star className="text-yellow-500"/> },
+            { label: 'Credibilidade', val: '100%', icon: <ShieldCheck className="text-yellow-500"/> },
           ].map((stat, i) => (
-            <div key={i} className="text-center p-8 rounded-3xl border border-white/5 bg-black/50 hover:border-brand-gold transition duration-500">
-              <div className="flex justify-center mb-4">{stat.icon}</div>
-              <h2 className="text-4xl font-black text-white mb-2">{stat.val}</h2>
-              <p className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">{stat.label}</p>
+            <div key={i} className="text-center p-6 rounded-2xl border border-white/5 bg-black/50">
+              <div className="flex justify-center mb-2">{stat.icon}</div>
+              <h2 className="text-2xl md:text-4xl font-black text-white">{stat.val}</h2>
+              <p className="text-gray-500 uppercase text-[8px] md:text-[10px] font-bold tracking-widest">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -71,36 +70,22 @@ export default function Home() {
 
       {/* EVENTOS EM DESTAQUE */}
       <section id="eventos" className="py-20 container mx-auto px-6">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <h2 className="text-4xl font-black italic uppercase">Eventos em <span className="text-brand-gold">Destaque</span></h2>
-            <div className="h-1 w-20 bg-brand-gold mt-2"></div>
-          </div>
-          <button className="text-brand-gold font-bold uppercase text-xs hover:underline">Ver Calendário Completo</button>
-        </div>
+        <h2 className="text-3xl font-black italic uppercase mb-12 border-l-4 border-yellow-500 pl-4">Eventos em <span className="text-yellow-500">Destaque</span></h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="group bg-brand-dark rounded-[35px] overflow-hidden border border-white/10 hover:border-brand-gold transition-all duration-500 shadow-2xl">
-              <div className="relative h-80 overflow-hidden">
-                <img src={`/banner-exemplo-${item}.jpg`} alt="Evento" className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
-                <div className="absolute top-6 left-6 bg-brand-gold text-black px-4 py-1 rounded-full text-[10px] font-black uppercase">Rodeio Show</div>
+          {[1].map((item) => (
+            <div key={item} className="group bg-zinc-900 rounded-[30px] overflow-hidden border border-white/10 hover:border-yellow-500 transition-all duration-500">
+              <div className="relative h-64 overflow-hidden">
+                <img src="/banner-rodeio.jpg" alt="Evento" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <div className="absolute top-4 left-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-[10px] font-black uppercase">Rodeio</div>
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-black uppercase italic leading-tight text-white group-hover:text-brand-gold transition">NOME DO EVENTO REGIONAL 2024</h3>
-                <div className="flex items-center gap-2 text-gray-400 mt-4 text-sm font-medium">
-                   <Calendar size={16} className="text-brand-gold" /> 25 de Agosto • 20:00h
-                </div>
-                <div className="flex items-center gap-2 text-gray-400 mt-2 text-sm font-medium">
-                   <MapPin size={16} className="text-brand-gold" /> Parque de Exposições, Luziânia
-                </div>
+              <div className="p-6">
+                <h3 className="text-xl font-black uppercase italic text-white group-hover:text-yellow-500 transition">RODEIO SHOW 2024</h3>
+                <p className="text-gray-400 text-sm mt-2">Parque de Exposições, Luziânia</p>
                 
-                <div className="mt-8 flex flex-col gap-3">
-                  <button className="w-full bg-brand-gold text-black font-black py-4 rounded-2xl hover:bg-brand-goldLight transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-tighter">
-                    <Ticket size={18} /> Garantir Ingresso
-                  </button>
-                  <button className="w-full bg-white/5 text-white font-bold py-4 rounded-2xl border border-white/10 hover:bg-white/10 transition uppercase text-xs">
-                    Saiba Mais Detalhes
+                <div className="mt-6 flex flex-col gap-2">
+                  <button className="w-full bg-yellow-500 text-black font-black py-3 rounded-xl hover:bg-yellow-400 transition flex items-center justify-center gap-2 uppercase text-xs">
+                    <Ticket size={16} /> Comprar Ingresso
                   </button>
                 </div>
               </div>
@@ -109,27 +94,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER PREMIUM */}
-      <footer className="bg-black py-20 border-t border-brand-gold/10">
-        <div className="container mx-auto px-6 text-center">
-          <img src="/logo-lza.png" alt="LZA" className="h-16 mx-auto mb-8 opacity-80" />
-          <p className="text-gray-500 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-            A maior vitrine de eventos de Luziânia e região. Transformamos a divulgação em sucesso de público. 
-            Não fazemos cobertura, fazemos acontecer.
-          </p>
-          <div className="flex justify-center gap-6 mb-12">
-            <a href="#" className="p-4 bg-brand-dark rounded-full border border-white/5 hover:border-brand-gold transition"><Instagram size={24} className="text-brand-gold"/></a>
-            <a href="#" className="p-4 bg-brand-dark rounded-full border border-white/5 hover:border-brand-gold transition"><Rocket size={24} className="text-brand-gold"/></a>
-          </div>
-          <p className="text-[10px] text-gray-700 uppercase tracking-widest font-bold">
-            © 2024 EVENTOS LZA • Desenvolvido para decolar a região
-          </p>
+      {/* FOOTER */}
+      <footer className="bg-black py-12 border-t border-white/10 text-center">
+        <img src="/logo-lza.png" alt="LZA" className="h-10 mx-auto mb-6 opacity-50" />
+        <div className="flex justify-center gap-6 mb-6">
+          <Instagram size={20} className="text-yellow-500"/>
+          <MessageCircle size={20} className="text-yellow-500"/>
         </div>
+        <p className="text-[10px] text-gray-600 uppercase tracking-widest">© 2024 EVENTOS LZA • LUZIÂNIA E REGIÃO</p>
       </footer>
 
       {/* WHATSAPP FLUTUANTE */}
-      <a href="https://wa.me/5562994319156" className="fixed bottom-10 right-10 z-50 bg-[#25D366] p-5 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.4)] hover:scale-110 transition transform active:scale-95">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-8 h-8" alt="WhatsApp" />
+      <a href="https://wa.me/5562994319156" className="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-2xl z-50">
+        <MessageCircle size={24} color="white" />
       </a>
     </div>
   );
