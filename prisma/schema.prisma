@@ -12,7 +12,7 @@ model User {
   nome          String   @default("Administrador")
   username      String   @unique
   password      String
-  nivel         String   @default("ADMIN") // SUPER, ADMIN, EDITOR
+  nivel         String   @default("ADMIN")
   cadastroNum   String   @default("001")
 }
 
@@ -24,5 +24,6 @@ model Evento {
   imagemUrl    String
   link         String?
   apoiado      Boolean  @default(false)
+  destaque     Boolean  @default(false)
   ativo        Boolean  @default(true)
 }
