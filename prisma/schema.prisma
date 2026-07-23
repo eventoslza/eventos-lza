@@ -1,3 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model Evento {
   id        String   @id @default(cuid())
   nome      String
@@ -7,4 +16,10 @@ model Evento {
   link      String?
   ativo     Boolean  @default(true)
   destaque  Boolean  @default(false)
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
 }
