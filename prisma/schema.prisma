@@ -1,25 +1,44 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Evento {
-  id        String   @id @default(cuid())
-  nome      String
-  data      DateTime
-  cidade    String
-  imagemUrl String
-  link      String?
-  ativo     Boolean  @default(true)
-  destaque  Boolean  @default(false)
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {
-  id       String @id @default(cuid())
-  username String @unique
-  password String
+  id            String   @id @default(cuid())
+  nome          String
+  foto          String   @default("/default-avatar.png")
+  username      String   @unique
+  password      String
+  cargo         String   @default("Administrador")
+  nivel         String   @default("ADMIN") // SUPER, ADMIN, EDITOR
+  status        String   @default("ATIVO")
+  cadastroNum   String   @unique
+  dataIngresso  DateTime @default(now())
+  ultimoAcesso  DateTime?
+}
+
+model Evento {
+  id           String   @id @default(cuid())
+  nome         String
+  data         DateTime
+  cidade       String
+  banner       String
+  linkIngresso String?
+  apoiado      Boolean  @default(false)
+  descricao    String?  @db.Text
+  ativo        Boolean  @default(true)
+  vistas       Int      @default(0)
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  ordem     Int      @default(0)
+  inicio    DateTime
+  fim       DateTime
+  ativo     Boolean  @default(true)
 }
