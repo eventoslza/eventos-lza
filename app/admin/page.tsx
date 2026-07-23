@@ -22,7 +22,8 @@ export default async function AdminPage() {
           <input name="imagemUrl" placeholder="Link da Imagem (URL)" style={{ padding: '12px', borderRadius: '8px', background: '#000', border: '1px solid #444', color: '#fff' }} required />
           <input name="link" placeholder="Link para Ingressos (Opcional)" style={{ padding: '12px', borderRadius: '8px', background: '#000', border: '1px solid #444', color: '#fff' }} />
           <button type="submit" style={{ background: '#FDB813', color: '#000', fontWeight: 'bold', padding: '15px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>PUBLICAR AGORA</button>
-        </form> section>
+        </form>
+      </section>
 
       {/* LISTA DE EXCLUSÃO */}
       <h2 style={{ color: '#FDB813', fontSize: '18px', marginBottom: '15px' }}>EVENTOS NO AR</h2>
@@ -38,6 +39,7 @@ export default async function AdminPage() {
             </form>
           </div>
         ))}
+        {eventos.length === 0 && <p style={{ color: '#444', textAlign: 'center' }}>Nenhum evento cadastrado.</p>}
       </div>
       
       <footer style={{ marginTop: '40px', textAlign: 'center' }}>
