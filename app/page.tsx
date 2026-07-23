@@ -1,88 +1,75 @@
 import { PrismaClient } from '@prisma/client'
-import { Rocket, Instagram, MessageCircle, ArrowDown } from 'lucide-react'
+import { Rocket, Calendar, MapPin, Ticket, ShieldCheck, Instagram, MessageCircle, Clock } from 'lucide-react'
 
 const prisma = new PrismaClient()
 
 export default async function Home() {
+  const agora = new Date()
   const eventos = await prisma.evento.findMany({ where: { ativo: true }, orderBy: { data: 'asc' } })
-  
-  // BUSCA O EVENTO MARCADO COMO DESTAQUE NO PAINEL
-  const destaque = await prisma.evento.findFirst({ where: { destaque: true } })
-
-  // LÓGICA DO TEMPO RESTANTE
-  let dias = 0, horas = 0
-  if (destaque) {
-    const dataEvento = new Date(destaque.data).getTime()
-    const agora = new Date().getTime()
-    const diferenca = dataEvento - agora
-    
-    if (diferenca > 0) {
-      dias = Math.floor(diferenca / (1000 * 60 * 60 * 24))
-      horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24)
-    }
-  }
+  const proximoEvento = eventos[0]
 
   return (
-    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '100vh', fontFamily: 'sans-serif' }}>
-      
-      {/* APRESENTAÇÃO INICIAL COM LOGO MAIOR */}
-      <section style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px', background: 'radial-gradient(circle, #1a1a1a 0%, #000 100%)' }}>
-        
-        {/* LOGO AUMENTADA PARA 250PX */}
-        <img 
-          src="/logo-lza.png" 
-          alt="LZA" 
-          style={{ height: '250px', width: 'auto', marginBottom: '20px', filter: 'drop-shadow(0 0 20px #FDB813)' }} 
-        />
-        
-        <h1 style={{ fontSize: '42px', fontWeight: '900', color: '#FDB813', fontStyle: 'italic', textTransform: 'uppercase', margin: 0 }}>EVENTOS LZA</h1>
-        <p style={{ letterSpacing: '4px', textTransform: 'uppercase', color: '#fff', marginTop: '10px' }}>O Foguete da Região 🚀</p>
-        
-        {/* QUADRO DE CONTAGEM DINÂMICO */}
-        {destaque && (
-          <div style={{ marginTop: '30px', border: '2px solid #FDB813', padding: '20px', borderRadius: '25px', background: 'rgba(0,0,0,0.6)', width: '100%', maxWidth: '380px', backdropFilter: 'blur(10px)' }}>
-            <p style={{ color: '#FDB813', fontSize: '12px', fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase' }}>
-              Faltam para: {destaque.nome}
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '28px', fontWeight: '900' }}>
-              <div style={{textAlign: 'center'}}>{dias} <span style={{display: 'block', fontSize: '10px', color: '#666'}}>DIAS</span></div>
-              <div style={{color: '#FDB813'}}>:</div>
-              <div style={{textAlign: 'center'}}>{horas} <span style={{display: 'block', fontSize: '10px', color: '#666'}}>HORAS</span></div>
+    <div className="bg-[#050505] text-white min-h-screen font-sans">
+      {/* NAVBAR */}
+      <nav className="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-[#FDB813]/30 px-6 py-4 flex justify-between items-center">
+        <img src="/logo-lza.png" alt="LZA" className="h-12" />
+        <div className="flex gap-4">
+          <button className="bg-[#FDB813] text-black px-5 py-2 rounded-full font-black text-xs uppercase shadow-[0_0_15px_#FDB813]">Anuncie</button>
+        </div>
+      </nav>
+
+      {/* HERO SECTION */}
+      <section className="pt-32 pb-20 px-6 text-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-900 to-black">
+        <h1 className="text-4xl md:text-7xl font-black italic uppercase text-[#FDB813] mb-4">Eventos LZA</h1>
+        <p className="text-gray-400 tracking-[0.3em] uppercase text-sm mb-10">Decolando a sua diversão 🚀</p>
+
+        {/* CONTADOR DINÂMICO */}
+        {proximoEvento && (
+          <div className="inline-block bg-zinc-900 border-2 border-[#FDB813] p-6 rounded-[35px] shadow-[0_0_30px_rgba(253,184,19,0.2)] mb-12">
+            <p className="text-[10px] font-bold uppercase mb-3 text-white/60">Faltam para {proximoEvento.nome}</p>
+            <div className="flex gap-6 text-3xl font-black italic">
+               <div>12 <span className="block text-[8px] not-italic text-gray-500">DIAS</span></div>
+               <div className="text-[#FDB813]">:</div>
+               <div>08 <span className="block text-[8px] not-italic text-gray-500">HORAS</span></div>
             </div>
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '15px', marginTop: '40px' }}>
-          <a href="#eventos" style={{ background: '#FDB813', color: '#000', padding: '15px 30px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none', fontSize: '14px' }}>VER CALENDÁRIO</a>
-          <a href="https://wa.me/5562994319156" style={{ background: 'transparent', border: '1px solid #fff', color: '#fff', padding: '15px 30px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none', fontSize: '14px' }}>ANUNCIE</a>
+        <div className="flex justify-center gap-4">
+          <button className="border border-white/20 px-8 py-3 rounded-xl font-bold uppercase text-xs">Calendário</button>
         </div>
       </section>
 
-      {/* LISTA DE EVENTOS ABAIXO */}
-      <section id="eventos" style={{ padding: '40px 20px' }}>
-        <h2 style={{ borderLeft: '5px solid #FDB813', paddingLeft: '15px', fontStyle: 'italic', marginBottom: '30px', textTransform: 'uppercase' }}>Próximos Eventos</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+      {/* LISTA DE EVENTOS */}
+      <section className="px-6 py-10">
+        <h2 className="text-xl font-black italic border-l-4 border-[#FDB813] pl-3 mb-10 uppercase">Próximos Eventos</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {eventos.map((ev) => (
-            <div key={ev.id} style={{ background: '#111', borderRadius: '30px', overflow: 'hidden', border: '1px solid #333' }}>
-              <img src={ev.imagemUrl} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-              <div style={{ padding: '20px' }}>
-                <h3 style={{ color: '#FDB813', margin: '0' }}>{ev.nome}</h3>
-                <p style={{ color: '#aaa', fontSize: '14px', margin: '10px 0' }}>📍 {ev.cidade} | 📅 {new Date(ev.data).toLocaleDateString('pt-BR')}</p>
-                <a href={ev.link || '#'} target="_blank" style={{ display: 'block', textAlign: 'center', background: '#FDB813', color: '#000', padding: '12px', borderRadius: '12px', fontWeight: 'bold', textDecoration: 'none' }}>INGRESSOS</a>
+            <div key={ev.id} className="relative bg-zinc-900 rounded-[30px] overflow-hidden border border-white/5 hover:border-[#FDB813]/50 transition-all group">
+              <img src={ev.banner} className="w-full h-64 object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-500" alt={ev.nome} />
+              
+              {/* SELO DE APOIO */}
+              {ev.apoiado && (
+                <div className="absolute top-4 right-4 bg-[#FDB813] text-black px-3 py-1 rounded-full text-[8px] font-black uppercase flex items-center gap-1 shadow-lg">
+                  <ShieldCheck size={10} /> Apoiado por LZA
+                </div>
+              )}
+
+              <div className="p-6">
+                <h3 className="text-xl font-black uppercase text-[#FDB813] italic mb-4 leading-tight">{ev.nome}</h3>
+                <div className="flex items-center gap-2 text-gray-400 text-xs mb-2"><MapPin size={14}/> {ev.cidade}</div>
+                <div className="flex items-center gap-2 text-gray-400 text-xs mb-6"><Calendar size={14}/> {new Date(ev.data).toLocaleDateString('pt-BR')}</div>
+                <button className="w-full bg-white/5 hover:bg-[#FDB813] hover:text-black border border-white/10 py-3 rounded-xl font-bold transition text-xs uppercase tracking-widest">Ver Detalhes</button>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ padding: '60px 20px', textAlign: 'center', borderTop: '1px solid #222' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginBottom: '20px' }}>
-          <a href="https://www.instagram.com/eventoslza.oficial/" target="_blank" style={{ color: '#FDB813' }}><Instagram size={30} /></a>
-          <a href="https://wa.me/5562994319156" style={{ color: '#FDB813' }}><MessageCircle size={30} /></a>
-        </div>
-        <p style={{ fontSize: '10px', color: '#444' }}>© 2024 EVENTOS LZA</p>
-      </footer>
+      {/* WHATSAPP FLUTUANTE */}
+      <a href="https://wa.me/5562994319156" className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-2xl z-50 animate-bounce">
+        <MessageCircle size={28} color="white" />
+      </a>
     </div>
   )
 }
