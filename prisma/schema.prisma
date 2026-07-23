@@ -15,6 +15,7 @@ model Evento {
   imagemUrl String
   link      String?
   ativo     Boolean  @default(true)
+  destaque  Boolean  @default(false)
 }
 
 model User {
