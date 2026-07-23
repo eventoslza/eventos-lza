@@ -1,96 +1,88 @@
 import { PrismaClient } from '@prisma/client'
-import { Rocket, Instagram, MessageCircle, Calendar, MapPin, Ticket, ShieldCheck, Users, Star, ArrowDown, Share2 } from 'lucide-react'
+import { Rocket, Instagram, MessageCircle, ArrowDown } from 'lucide-react'
 
 const prisma = new PrismaClient()
 
 export default async function Home() {
-  const eventos = await prisma.evento.findMany({ 
-    where: { ativo: true },
-    orderBy: { data: 'asc' } 
-  })
+  const eventos = await prisma.evento.findMany({ where: { ativo: true }, orderBy: { data: 'asc' } })
+  
+  // BUSCA O EVENTO MARCADO COMO DESTAQUE NO PAINEL
+  const destaque = await prisma.evento.findFirst({ where: { destaque: true } })
+
+  // LÓGICA DO TEMPO RESTANTE
+  let dias = 0, horas = 0
+  if (destaque) {
+    const dataEvento = new Date(destaque.data).getTime()
+    const agora = new Date().getTime()
+    const diferenca = dataEvento - agora
+    
+    if (diferenca > 0) {
+      dias = Math.floor(diferenca / (1000 * 60 * 60 * 24))
+      horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24)
+    }
+  }
 
   return (
-    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '100vh', fontFamily: 'sans-serif', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '100vh', fontFamily: 'sans-serif' }}>
       
-      {/* 1. APRESENTAÇÃO DE IMPACTO */}
-      <section style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px', background: 'radial-gradient(circle, #1a1a1a 0%, #000 100%)', borderBottom: '3px solid #FDB813' }}>
-        <div style={{ marginBottom: '20px' }}>
-          <img 
-            src="/logo-lza.png" 
-            alt="EVENTOS LZA" 
-            style={{ height: '180px', width: 'auto', filter: 'drop-shadow(0 0 20px rgba(253,184,19,0.4))' }} 
-          />
-        </div>
-        <h1 style={{ fontSize: '42px', fontWeight: '900', color: '#FDB813', fontStyle: 'italic', textTransform: 'uppercase', lineHeight: '1', margin: '10px 0' }}>EVENTOS LZA</h1>
-        <h2 style={{ fontSize: '18px', color: '#fff', letterSpacing: '5px', textTransform: 'uppercase', marginBottom: '30px' }}>O Foguete da Região 🚀</h2>
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <a href="#eventos" style={{ background: '#FDB813', color: '#000', padding: '15px 35px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>VER CALENDÁRIO</a>
-          <a href="https://wa.me/5562994319156" style={{ background: 'transparent', border: '2px solid #fff', color: '#fff', padding: '15px 35px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none' }}>ANUNCIE AGORA</a>
-        </div>
-        <ArrowDown color="#FDB813" size={30} style={{ marginTop: '50px', animation: 'bounce 2s infinite' }} />
-      </section>
-
-      {/* 2. CONTADOR MASTER (EXPOAGRO) */}
-      <section style={{ padding: '40px 20px', textAlign: 'center', background: '#000' }}>
-        <div style={{ border: '2px solid #FDB813', padding: '30px', borderRadius: '30px', background: '#111', display: 'inline-block', width: '100%', maxWidth: '400px' }}>
-          <p style={{ color: '#FDB813', fontWeight: 'bold', fontSize: '12px', marginBottom: '15px' }}>PRÓXIMO GRANDE EVENTO: EXPOAGRO</p>
-          <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '30px', fontWeight: '900' }}>
-            <div>15 <small style={{ display: 'block', fontSize: '10px', color: '#666' }}>DIAS</small></div>
-            <div style={{ color: '#FDB813' }}>:</div>
-            <div>08 <small style={{ display: 'block', fontSize: '10px', color: '#666' }}>HRS</small></div>
-            <div style={{ color: '#FDB813' }}>:</div>
-            <div>42 <small style={{ display: 'block', fontSize: '10px', color: '#666' }}>MIN</small></div>
+      {/* APRESENTAÇÃO INICIAL COM LOGO MAIOR */}
+      <section style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px', background: 'radial-gradient(circle, #1a1a1a 0%, #000 100%)' }}>
+        
+        {/* LOGO AUMENTADA PARA 250PX */}
+        <img 
+          src="/logo-lza.png" 
+          alt="LZA" 
+          style={{ height: '250px', width: 'auto', marginBottom: '20px', filter: 'drop-shadow(0 0 20px #FDB813)' }} 
+        />
+        
+        <h1 style={{ fontSize: '42px', fontWeight: '900', color: '#FDB813', fontStyle: 'italic', textTransform: 'uppercase', margin: 0 }}>EVENTOS LZA</h1>
+        <p style={{ letterSpacing: '4px', textTransform: 'uppercase', color: '#fff', marginTop: '10px' }}>O Foguete da Região 🚀</p>
+        
+        {/* QUADRO DE CONTAGEM DINÂMICO */}
+        {destaque && (
+          <div style={{ marginTop: '30px', border: '2px solid #FDB813', padding: '20px', borderRadius: '25px', background: 'rgba(0,0,0,0.6)', width: '100%', maxWidth: '380px', backdropFilter: 'blur(10px)' }}>
+            <p style={{ color: '#FDB813', fontSize: '12px', fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase' }}>
+              Faltam para: {destaque.nome}
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '28px', fontWeight: '900' }}>
+              <div style={{textAlign: 'center'}}>{dias} <span style={{display: 'block', fontSize: '10px', color: '#666'}}>DIAS</span></div>
+              <div style={{color: '#FDB813'}}>:</div>
+              <div style={{textAlign: 'center'}}>{horas} <span style={{display: 'block', fontSize: '10px', color: '#666'}}>HORAS</span></div>
+            </div>
           </div>
+        )}
+
+        <div style={{ display: 'flex', gap: '15px', marginTop: '40px' }}>
+          <a href="#eventos" style={{ background: '#FDB813', color: '#000', padding: '15px 30px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none', fontSize: '14px' }}>VER CALENDÁRIO</a>
+          <a href="https://wa.me/5562994319156" style={{ background: 'transparent', border: '1px solid #fff', color: '#fff', padding: '15px 30px', borderRadius: '50px', fontWeight: 'bold', textDecoration: 'none', fontSize: '14px' }}>ANUNCIE</a>
         </div>
       </section>
 
-      {/* 3. NÚMEROS */}
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '40px 20px', backgroundColor: '#0a0a0a' }}>
-        <div style={{ textAlign: 'center', padding: '30px', border: '1px solid #222', borderRadius: '25px', background: '#111' }}>
-          <h3 style={{ color: '#FDB813', fontSize: '32px', margin: 0 }}>500+</h3>
-          <p style={{ fontSize: '10px', color: '#666', textTransform: 'uppercase' }}>Eventos Divulgados</p>
-        </div>
-        <div style={{ textAlign: 'center', padding: '30px', border: '1px solid #222', borderRadius: '25px', background: '#111' }}>
-          <h3 style={{ color: '#FDB813', fontSize: '32px', margin: 0 }}>100%</h3>
-          <p style={{ fontSize: '10px', color: '#666', textTransform: 'uppercase' }}>Credibilidade</p>
-        </div>
-      </section>
-
-      {/* 4. LISTA DE EVENTOS */}
-      <section id="eventos" style={{ padding: '60px 20px' }}>
-        <h2 style={{ borderLeft: '6px solid #FDB813', paddingLeft: '15px', fontStyle: 'italic', marginBottom: '40px' }}>PRÓXIMOS EVENTOS</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+      {/* LISTA DE EVENTOS ABAIXO */}
+      <section id="eventos" style={{ padding: '40px 20px' }}>
+        <h2 style={{ borderLeft: '5px solid #FDB813', paddingLeft: '15px', fontStyle: 'italic', marginBottom: '30px', textTransform: 'uppercase' }}>Próximos Eventos</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
           {eventos.map((ev) => (
             <div key={ev.id} style={{ background: '#111', borderRadius: '30px', overflow: 'hidden', border: '1px solid #333' }}>
-              <img src={ev.imagemUrl} style={{ width: '100%', height: '300px', objectFit: 'cover' }} alt={ev.nome} />
-              <div style={{ padding: '25px' }}>
-                <h3 style={{ color: '#FDB813', fontSize: '26px', margin: '0' }}>{ev.nome}</h3>
-                <p style={{ color: '#aaa', margin: '10px 0' }}>📍 {ev.cidade} | 📅 {new Date(ev.data).toLocaleDateString('pt-BR')}</p>
-                <a href={ev.link || '#'} target="_blank" style={{ display: 'block', textAlign: 'center', background: '#FDB813', color: '#000', padding: '15px', borderRadius: '15px', fontWeight: 'bold', textDecoration: 'none' }}>GARANTIR INGRESSO</a>
+              <img src={ev.imagemUrl} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+              <div style={{ padding: '20px' }}>
+                <h3 style={{ color: '#FDB813', margin: '0' }}>{ev.nome}</h3>
+                <p style={{ color: '#aaa', fontSize: '14px', margin: '10px 0' }}>📍 {ev.cidade} | 📅 {new Date(ev.data).toLocaleDateString('pt-BR')}</p>
+                <a href={ev.link || '#'} target="_blank" style={{ display: 'block', textAlign: 'center', background: '#FDB813', color: '#000', padding: '12px', borderRadius: '12px', fontWeight: 'bold', textDecoration: 'none' }}>INGRESSOS</a>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 5. RODAPÉ E INSTAGRAM (@eventoslza.oficial) */}
-      <footer style={{ padding: '80px 20px', textAlign: 'center', borderTop: '1px solid #222', background: '#000' }}>
-        <img src="/logo-lza.png" style={{ height: '60px', opacity: 0.7, marginBottom: '30px' }} />
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', marginBottom: '40px' }}>
-          <a href="https://www.instagram.com/eventoslza.oficial/" target="_blank" style={{ color: '#FDB813', textDecoration: 'none', textAlign: 'center' }}>
-            <Instagram size={40} /><br/><span style={{ fontSize: '10px' }}>Instagram</span>
-          </a>
-          <a href="https://wa.me/5562994319156" target="_blank" style={{ color: '#FDB813', textDecoration: 'none', textAlign: 'center' }}>
-            <MessageCircle size={40} /><br/><span style={{ fontSize: '10px' }}>WhatsApp</span>
-          </a>
+      {/* FOOTER */}
+      <footer style={{ padding: '60px 20px', textAlign: 'center', borderTop: '1px solid #222' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginBottom: '20px' }}>
+          <a href="https://www.instagram.com/eventoslza.oficial/" target="_blank" style={{ color: '#FDB813' }}><Instagram size={30} /></a>
+          <a href="https://wa.me/5562994319156" style={{ color: '#FDB813' }}><MessageCircle size={30} /></a>
         </div>
-        <p style={{ fontSize: '11px', color: '#444' }}>© 2024 EVENTOS LZA - TODOS OS DIREITOS RESERVADOS</p>
+        <p style={{ fontSize: '10px', color: '#444' }}>© 2024 EVENTOS LZA</p>
       </footer>
-
-      {/* WHATSAPP FLUTUANTE */}
-      <a href="https://wa.me/5562994319156" style={{ position: 'fixed', bottom: '25px', right: '25px', background: '#25D366', width: '65px', height: '65px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 5px 20px rgba(0,0,0,0.6)', zIndex: 1000 }}>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style={{ width: '35px' }} />
-      </a>
     </div>
   )
 }
