@@ -21,11 +21,12 @@ export async function criarEvento(formData: FormData) {
       ativo: true 
     }
   })
-
   revalidatePath('/')
+  revalidatePath('/admin')
 }
 
 export async function deletarEvento(id: string) {
   await prisma.evento.delete({ where: { id } })
   revalidatePath('/')
+  revalidatePath('/admin')
 }
