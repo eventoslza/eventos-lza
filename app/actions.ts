@@ -9,7 +9,6 @@ export async function fazerLogin(formData: FormData) {
   const cadastro = formData.get("cadastro") as string
   const password = formData.get("password") as string
   
-  // Aqui o Prisma agora vai aceitar buscar por cadastroNum porque marcamos como @unique
   const user = await prisma.user.findUnique({ 
     where: { cadastroNum: cadastro } 
   })
@@ -34,16 +33,7 @@ export async function salvarEvento(formData: FormData) {
 
   if (destaque) { await prisma.evento.updateMany({ data: { destaque: false } }) }
 
-  const dados = { 
-    nome, 
-    data: new Date(data), 
-    cidade, 
-    banner, 
-    linkIngresso: link, 
-    destaque, 
-    apoiado, 
-    ativo: true 
-  }
+  const dados = { nome, data: new Date(data), cidade, banner, linkIngresso: link, destaque, apoiado, ativo: true }
 
   if (id) {
     await prisma.evento.update({ where: { id }, data: dados })
@@ -52,13 +42,11 @@ export async function salvarEvento(formData: FormData) {
   }
 
   revalidatePath('/')
-  revalidatePath('/admin')
 }
 
 export async function deletarEvento(id: string) {
   await prisma.evento.delete({ where: { id } })
   revalidatePath('/')
-  revalidatePath('/admin')
 }
 
 export async function fazerLogout() {
