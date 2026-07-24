@@ -1,19 +1,52 @@
 "use server"
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 
 const prisma = new PrismaClient()
 
-export async function criarEvento(formData: FormData) {
+// LOGIN POR NÚMERO DE CADASTRO E SENHA
+export async function fazerLogin(formData: FormData) {
+  const cadastroNum = formData.get("cadastro") as string
+  const password = formData.get("password") as string
+  
+  const user = await prisma.user.findUnique({ where: { cadastroNum } })
+
+  if (user && user.password === password) {
+    cookies().set("lza_admin_session", user.id, {
+      httpOnly: true, secure: true, path: '/', maxAge: 60 * 60 * 24
+    })
+    revalidatePath('/admin')
+    return { success: true }
+  }
+  return { success: false }
+}
+
+export async function fazerLogout() {
+  cookies().delete("lza_admin_session")
+  revalidatePath('/admin')
+}
+
+// SALVAR OU EDITAR EVENTO
+export async function salvarEvento(formData: FormData) {
+  const id = formData.get("id") as string
   const nome = formData.get("nome") as string
   const data = formData.get("data") as string
   const cidade = formData.get("cidade") as string
-  const imagemUrl = formData.get("imagemUrl") as string
+  const banner = formData.get("banner") as string
   const link = formData.get("link") as string
+  const destaque = formData.get("destaque") === "on"
+  const apoiado = formData.get("apoiado") === "on"
 
-  await prisma.evento.create({
-    data: { nome, data: new Date(data), cidade, imagemUrl, link }
-  })
+  if (destaque) { await prisma.evento.updateMany({ data: { destaque: false } }) }
+
+  const dados = { nome, data: new Date(data), cidade, banner, linkIngresso: link, destaque, apoiado, ativo: true }
+
+  if (id) {
+    await prisma.evento.update({ where: { id }, data: dados })
+  } else {
+    await prisma.evento.create({ data: dados })
+  }
 
   revalidatePath('/')
   revalidatePath('/admin')
