@@ -10,10 +10,11 @@ datasource db {
 model User {
   id            String   @id @default(cuid())
   nome          String   @default("Administrador")
-  username      String   @unique
+  cadastroNum   String   @unique // O segredo para o erro sumir está aqui
   password      String
+  cargo         String   @default("Diretor")
   nivel         String   @default("SUPER")
-  cadastroNum   String   @default("001")
+  dataIngresso  DateTime @default(now())
 }
 
 model Evento {
@@ -21,8 +22,8 @@ model Evento {
   nome         String
   data         DateTime
   cidade       String
-  imagemUrl    String
-  link         String?
+  banner       String   // Certifique-se de que o campo se chama banner no actions.ts também
+  linkIngresso String?
   apoiado      Boolean  @default(false)
   destaque     Boolean  @default(false)
   ativo        Boolean  @default(true)
