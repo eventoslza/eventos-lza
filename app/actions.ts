@@ -15,18 +15,24 @@ export async function fazerLogin(formData: FormData) {
   }
 }
 
+export async function fazerLogout() {
+  cookies().delete("lza_admin_session")
+  revalidatePath('/admin')
+}
+
 export async function salvarEvento(formData: FormData) {
   const id = formData.get("id") as string
   const nome = formData.get("nome") as string
   const data = formData.get("data") as string
   const cidade = formData.get("cidade") as string
   const banner = formData.get("banner") as string
+  const link = formData.get("link") as string
   const destaque = formData.get("destaque") === "on"
   const apoiado = formData.get("apoiado") === "on"
 
   if (destaque) { await prisma.evento.updateMany({ data: { destaque: false } }) }
 
-  const dados = { nome, data: new Date(data), cidade, banner, destaque, apoiado, ativo: true }
+  const dados = { nome, data: new Date(data), cidade, banner, linkIngresso: link, destaque, apoiado, ativo: true }
 
   if (id) {
     await prisma.evento.update({ where: { id }, data: dados })
@@ -40,10 +46,5 @@ export async function salvarEvento(formData: FormData) {
 export async function deletarEvento(id: string) {
   await prisma.evento.delete({ where: { id } })
   revalidatePath('/')
-  revalidatePath('/admin')
-}
-
-export async function fazerLogout() {
-  cookies().delete("lza_admin_session")
   revalidatePath('/admin')
 }
