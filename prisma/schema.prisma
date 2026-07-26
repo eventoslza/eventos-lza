@@ -1,16 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
   id            String   @id @default(cuid())
   nome          String
-  foto          String   @default("https://github.com/identicons/jedi.png")
+  foto          String   @default("https://i.postimg.cc/m2m9z9z9/default-avatar.png")
   cadastroNum   String   @unique
   password      String
   cargo         String   @default("Editor")
@@ -31,6 +31,7 @@ model Evento {
   destaque     Boolean  @default(false)
   ativo        Boolean  @default(true)
   vistas       Int      @default(0)
+  descricao    String?  @db.Text
 }
 
 model Banner {
