@@ -5,21 +5,20 @@ import { cookies } from 'next/headers'
 
 const prisma = new PrismaClient()
 
+// LOGIN
 export async function fazerLogin(formData: FormData) {
   const cadastro = formData.get("cadastro") as string
   const password = formData.get("password") as string
   const user = await prisma.user.findUnique({ where: { cadastroNum: cadastro } })
+  
   if (user && user.password === password) {
     cookies().set("lza_admin_session", user.id, { httpOnly: true, secure: true, path: '/', maxAge: 60 * 60 * 24 })
+    await prisma.user.update({ where: { id: user.id }, data: { ultimoAcesso: new Date() } })
     revalidatePath('/admin')
   }
 }
 
-export async function fazerLogout() {
-  cookies().delete("lza_admin_session")
-  revalidatePath('/admin')
-}
-
+// SALVAR EVENTO (CADASTRAR OU EDITAR)
 export async function salvarEvento(formData: FormData) {
   const id = formData.get("id") as string
   const nome = formData.get("nome") as string
@@ -27,12 +26,12 @@ export async function salvarEvento(formData: FormData) {
   const cidade = formData.get("cidade") as string
   const banner = formData.get("banner") as string
   const link = formData.get("link") as string
-  const destaque = formData.get("destaque") === "on"
   const apoiado = formData.get("apoiado") === "on"
+  const destaque = formData.get("destaque") === "on"
 
   if (destaque) { await prisma.evento.updateMany({ data: { destaque: false } }) }
 
-  const dados = { nome, data: new Date(data), cidade, banner, linkIngresso: link, destaque, apoiado, ativo: true }
+  const dados = { nome, data: new Date(data), cidade, banner, linkIngresso: link, apoiado, destaque }
 
   if (id) {
     await prisma.evento.update({ where: { id }, data: dados })
@@ -46,5 +45,10 @@ export async function salvarEvento(formData: FormData) {
 export async function deletarEvento(id: string) {
   await prisma.evento.delete({ where: { id } })
   revalidatePath('/')
+  revalidatePath('/admin')
+}
+
+export async function fazerLogout() {
+  cookies().delete("lza_admin_session")
   revalidatePath('/admin')
 }
